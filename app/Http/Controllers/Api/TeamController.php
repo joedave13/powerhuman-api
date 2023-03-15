@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Team\StoreTeamRequest;
 use App\Http\Requests\Api\Team\UpdateTeamRequest;
 use App\Http\Resources\TeamResource;
+use App\Models\Company;
 use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -91,5 +92,14 @@ class TeamController extends Controller
         $team->delete();
 
         return response()->noContent();
+    }
+
+    public function getTeamByCompany(Request $request)
+    {
+        $companyId = $request->company_id;
+
+        $teams = Company::query()->find($companyId)->teams;
+
+        return TeamResource::collection($teams);
     }
 }
