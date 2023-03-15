@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Company\StoreCompanyRequest;
+use App\Http\Requests\Api\Company\UpdateCompanyRequest;
 use App\Http\Resources\CompanyResource;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
 {
@@ -59,9 +61,21 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Company $company)
+    public function update(UpdateCompanyRequest $request, Company $company)
     {
-        //
+        $data = $request->safe()->only(['name']);
+
+        if ($request->hasFile('logo')) {
+            if ($company->logo && Storage::disk('public')->exists($company->logo)) {
+                Storage::disk('public')->delete($company->logo);
+            }
+
+            $data['logo'] = $request->file('logo')->store('company/logo', 'public');
+        }
+
+        $company->update($data);
+
+        return new CompanyResource($company);
     }
 
     /**
