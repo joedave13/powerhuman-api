@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CompanyController;
+use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,4 +29,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('companies/fetch', [CompanyController::class, 'getCompanyByUser']);
     Route::apiResource('companies', CompanyController::class);
+
+    Route::apiResource('teams', TeamController::class);
 });
