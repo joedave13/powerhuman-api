@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Company\StoreCompanyRequest;
 use App\Http\Resources\CompanyResource;
 use App\Models\Company;
 use Illuminate\Http\Request;
@@ -25,9 +26,19 @@ class CompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCompanyRequest $request)
     {
-        //
+        $data = $request->safe()->only(['name']);
+
+        if ($request->hasFile('logo')) {
+            $data['logo'] = $request->file('logo')->store('company/logo', 'public');
+        }
+
+        $company = Company::query()->create($data);
+
+        $request->user()->companies()->attach($company->id);
+
+        return new CompanyResource($company);
     }
 
     /**
