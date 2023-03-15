@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Team\StoreTeamRequest;
 use App\Http\Resources\TeamResource;
 use App\Models\Team;
 use Illuminate\Http\Request;
@@ -25,9 +26,17 @@ class TeamController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTeamRequest $request)
     {
-        //
+        $data = $request->safe()->only(['name', 'company_id']);
+
+        if ($request->hasFile('icon')) {
+            $data['icon'] = $request->file('icon')->store('team/icon', 'public');
+        }
+
+        $team = Team::query()->create($data);
+
+        return new TeamResource($team);
     }
 
     /**
