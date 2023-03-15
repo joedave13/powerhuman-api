@@ -12,9 +12,9 @@ class Company extends Model
 
     protected $fillable = ['name', 'logo', 'user_id'];
 
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class);
     }
 
     public function teams()
