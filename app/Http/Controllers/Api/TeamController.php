@@ -84,6 +84,12 @@ class TeamController extends Controller
      */
     public function destroy(Team $team)
     {
-        //
+        if ($team->icon && Storage::disk('public')->exists($team->icon)) {
+            Storage::disk('public')->delete($team->icon);
+        }
+
+        $team->delete();
+
+        return response()->noContent();
     }
 }
