@@ -10,7 +10,7 @@ class Company extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['name', 'logo', 'user_id'];
+    protected $fillable = ['name', 'logo'];
 
     public function users()
     {
