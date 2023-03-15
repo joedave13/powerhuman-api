@@ -94,4 +94,9 @@ class CompanyController extends Controller
 
         return response()->noContent();
     }
+
+    public function getCompanyByUser(Request $request)
+    {
+        return CompanyResource::collection($request->user()->companies()->get());
+    }
 }

@@ -25,5 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
     Route::apiResource('users', UserController::class);
+
+    Route::get('companies/fetch', [CompanyController::class, 'getCompanyByUser']);
     Route::apiResource('companies', CompanyController::class);
 });
