@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Team\StoreTeamRequest;
+use App\Http\Requests\Api\Team\UpdateTeamRequest;
 use App\Http\Resources\TeamResource;
 use App\Models\Team;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TeamController extends Controller
 {
@@ -57,9 +59,21 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Team $team)
+    public function update(UpdateTeamRequest $request, Team $team)
     {
-        //
+        $data = $request->safe()->only('name');
+
+        if ($request->hasFile('icon')) {
+            if ($team->icon && Storage::disk('public')->exists($team->icon)) {
+                Storage::disk('public')->delete($team->icon);
+            }
+
+            $data['icon'] = $request->file('icon')->store('team/icon', 'public');
+        }
+
+        $team->update($data);
+
+        return new TeamResource($team);
     }
 
     /**
