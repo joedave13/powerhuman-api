@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Employee\StoreEmployeeRequest;
 use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use Illuminate\Http\Request;
@@ -25,9 +26,17 @@ class EmployeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreEmployeeRequest $request)
     {
-        //
+        $data = $request->safe()->except(['_token', 'photo']);
+
+        if ($request->hasFile('photo')) {
+            $data['photo'] = $request->file('photo')->store('employee/photo', 'public');
+        }
+
+        $employee = Employee::query()->create($data);
+
+        return new EmployeeResource($employee);
     }
 
     /**
