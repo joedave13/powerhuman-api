@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\Team\StoreRoleRequest;
+use App\Http\Requests\Api\Role\StoreRoleRequest;
+use App\Http\Requests\Api\Role\UpdateRoleRequest;
 use App\Http\Resources\RoleResource;
 use App\Models\Role;
 use Illuminate\Http\Request;
@@ -53,9 +54,13 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        //
+        $data = $request->validated();
+
+        $role->update($data);
+
+        return new RoleResource($role);
     }
 
     /**
