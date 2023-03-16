@@ -7,6 +7,7 @@ use App\Http\Requests\Api\Responsibility\StoreResponsibilityRequest;
 use App\Http\Requests\Api\Responsibility\UpdateResponsibilityRequest;
 use App\Http\Resources\ResponsibilityResource;
 use App\Models\Responsibility;
+use App\Models\Role;
 use Illuminate\Http\Request;
 
 class ResponsibilityController extends Controller
@@ -74,5 +75,18 @@ class ResponsibilityController extends Controller
         $responsibility->delete();
 
         return response()->noContent();
+    }
+
+    public function getResponsibilityByRole(Request $request)
+    {
+        $roleId = $request->role_id;
+
+        if ($roleId) {
+            $responsibilities = Role::query()->findOrFail($roleId)->responsibilities;
+
+            return ResponsibilityResource::collection($responsibilities);
+        }
+
+        return response()->json(['Responsibility not found.'], 404);
     }
 }
