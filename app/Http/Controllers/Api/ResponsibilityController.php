@@ -43,7 +43,7 @@ class ResponsibilityController extends Controller
      */
     public function show(Responsibility $responsibility)
     {
-        //
+        return new ResponsibilityResource($responsibility);
     }
 
     /**
