@@ -47,7 +47,7 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        //
+        return new EmployeeResource($employee);
     }
 
     /**
