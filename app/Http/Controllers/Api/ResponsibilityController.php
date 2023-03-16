@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Responsibility\StoreResponsibilityRequest;
 use App\Http\Resources\ResponsibilityResource;
 use App\Models\Responsibility;
 use Illuminate\Http\Request;
@@ -25,9 +26,13 @@ class ResponsibilityController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreResponsibilityRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $responsibility = Responsibility::query()->create($data);
+
+        return new ResponsibilityResource($responsibility);
     }
 
     /**
