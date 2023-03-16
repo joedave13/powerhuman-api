@@ -43,5 +43,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('responsibilities', ResponsibilityController::class);
 
     Route::get('employees/fetch-team', [EmployeeController::class, 'getEmployeeByTeam']);
+    Route::get('employees/fetch-role', [EmployeeController::class, 'getEmployeeByRole']);
     Route::apiResource('employees', EmployeeController::class);
 });
