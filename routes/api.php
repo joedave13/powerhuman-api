@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CompanyController;
+use App\Http\Controllers\Api\ResponsibilityController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\UserController;
@@ -36,4 +37,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('roles/fetch', [RoleController::class, 'getRoleByCompany']);
     Route::apiResource('roles', RoleController::class);
+
+    Route::apiResource('responsibilities', ResponsibilityController::class);
 });
