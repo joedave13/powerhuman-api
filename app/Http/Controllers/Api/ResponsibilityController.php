@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Responsibility\StoreResponsibilityRequest;
+use App\Http\Requests\Api\Responsibility\UpdateResponsibilityRequest;
 use App\Http\Resources\ResponsibilityResource;
 use App\Models\Responsibility;
 use Illuminate\Http\Request;
@@ -53,9 +54,13 @@ class ResponsibilityController extends Controller
      * @param  \App\Models\Responsibility  $responsibility
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Responsibility $responsibility)
+    public function update(UpdateResponsibilityRequest $request, Responsibility $responsibility)
     {
-        //
+        $data = $request->validated();
+
+        $responsibility->update($data);
+
+        return new ResponsibilityResource($responsibility);
     }
 
     /**
