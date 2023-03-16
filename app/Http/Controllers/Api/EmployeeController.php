@@ -7,6 +7,7 @@ use App\Http\Requests\Api\Employee\StoreEmployeeRequest;
 use App\Http\Requests\Api\Employee\UpdateEmployeeRequest;
 use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
+use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -91,5 +92,18 @@ class EmployeeController extends Controller
         $employee->delete();
 
         return response()->noContent();
+    }
+
+    public function getEmployeeByTeam(Request $request)
+    {
+        $teamId = $request->team_id;
+
+        if ($teamId) {
+            $employees = Team::query()->findOrFail($teamId)->employees;
+
+            return EmployeeResource::collection($employees);
+        }
+
+        return response()->json(['Employee not found.'], 404);
     }
 }
