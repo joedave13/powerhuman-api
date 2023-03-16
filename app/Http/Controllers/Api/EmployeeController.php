@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Employee\StoreEmployeeRequest;
+use App\Http\Requests\Api\Employee\UpdateEmployeeRequest;
 use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class EmployeeController extends Controller
 {
@@ -57,9 +59,21 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employee $employee)
+    public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-        //
+        $data = $request->except(['_token', '_method', 'photo']);
+
+        if ($request->hasFile('photo')) {
+            if ($employee->photo && Storage::disk('public')->exists($employee->photo)) {
+                Storage::disk('public')->delete($employee->photo);
+            }
+
+            $data = $request->file('photo')->store('employee/photo', 'public');
+        }
+
+        $employee->update($data);
+
+        return new EmployeeResource($employee);
     }
 
     /**
