@@ -84,6 +84,12 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        //
+        if ($employee->photo && Storage::disk('public')->exists($employee->photo)) {
+            Storage::disk('public')->delete($employee->photo);
+        }
+
+        $employee->delete();
+
+        return response()->noContent();
     }
 }
