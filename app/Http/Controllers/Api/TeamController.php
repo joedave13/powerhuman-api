@@ -98,8 +98,12 @@ class TeamController extends Controller
     {
         $companyId = $request->company_id;
 
-        $teams = Company::query()->find($companyId)->teams;
+        if ($companyId) {
+            $teams = Company::query()->findOrFail($companyId)->teams;
 
-        return TeamResource::collection($teams);
+            return TeamResource::collection($teams);
+        }
+
+        return response()->json(['message' => 'Team not found.'], 404);
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Role\StoreRoleRequest;
 use App\Http\Requests\Api\Role\UpdateRoleRequest;
 use App\Http\Resources\RoleResource;
+use App\Models\Company;
 use App\Models\Role;
 use Illuminate\Http\Request;
 
@@ -74,5 +75,18 @@ class RoleController extends Controller
         $role->delete();
 
         return response()->noContent();
+    }
+
+    public function getRoleByCompany(Request $request)
+    {
+        $companyId = $request->company_id;
+
+        if ($companyId) {
+            $roles = Company::query()->findOrFail($companyId)->roles;
+
+            return RoleResource::collection($roles);
+        }
+
+        return response()->json(['message' => 'Role not found.'], 404);
     }
 }

@@ -34,5 +34,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('teams/fetch', [TeamController::class, 'getTeamByCompany']);
     Route::apiResource('teams', TeamController::class);
 
+    Route::get('roles/fetch', [RoleController::class, 'getRoleByCompany']);
     Route::apiResource('roles', RoleController::class);
 });
