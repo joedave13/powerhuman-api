@@ -87,6 +87,6 @@ class ResponsibilityController extends Controller
             return ResponsibilityResource::collection($responsibilities);
         }
 
-        return response()->json(['Responsibility not found.'], 404);
+        return response()->json(['message' => 'Responsibility not found.'], 404);
     }
 }
