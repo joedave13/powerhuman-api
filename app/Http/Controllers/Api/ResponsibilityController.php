@@ -71,6 +71,8 @@ class ResponsibilityController extends Controller
      */
     public function destroy(Responsibility $responsibility)
     {
-        //
+        $responsibility->delete();
+
+        return response()->noContent();
     }
 }
